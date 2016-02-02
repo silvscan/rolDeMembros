@@ -3,7 +3,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/favicon.png">
 	
-    <title>Admin IPB</title>
+    <title>Admin IPJC</title>
 
     <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
     
@@ -12,6 +12,11 @@
     <link href="${pageContext.request.contextPath}/css/font-awesome.min.css" rel="stylesheet" />
     <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/style-responsive.css" rel="stylesheet" />
+    <style type="text/css">
+    	form{
+    		margin-bottom: 0em;
+    	}
+    </style>
 	
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
     <!--[if lt IE 9]>
@@ -26,6 +31,8 @@
     <script src="${pageContext.request.contextPath}/js/jquery.nicescroll.js" type="text/javascript"></script><!--custome script for all page-->
     <script src="${pageContext.request.contextPath}/js/scripts.js"></script>
     <script src="${pageContext.request.contextPath}/js/jquery.form.js"></script>
+    <script src="${pageContext.request.contextPath}/js/jquery.maskedinput.js"></script>
+    
 </head>
 
 
@@ -33,15 +40,15 @@
             <div class="toggle-nav">
                 <div class="icon-reorder tooltips" data-original-title="Toggle Navigation" data-placement="bottom"></div>
             </div>
-            <a href="" class="logo">IPBJC <span class="lite">Admin</span></a>
+            <a href="" class="logo">IPJC <span class="lite">Admin</span></a>
       </header>      
      
       <aside>
           <div id="sidebar"  class="nav-collapse ">
               <!-- sidebar menu start-->
               <ul class="sidebar-menu">                
-                  <li class="">
-                      <a class="" href="">
+                  <li>
+                      <a href="${pageContext.request.contextPath}/admin/index.jsp">
                           <i class="icon_house_alt"></i>
                           <span>Home</span>
                       </a>
@@ -50,12 +57,12 @@
                       <a href="#" >
                           <i class="icon_document_alt"></i>
                           <span>Cadastros</span>
-                          <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; e Consultas</span>
+                          <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; & Consultas</span>
                           
                           <span class="menu-arrow arrow_carrot-right"></span>
                       </a>
                       <ul class="sub">
-                      	  <form method="post" action="Controller">
+                      	  <form method="post" action="${pageContext.request.contextPath}/Controller">
 	                          <input type=hidden name=tipoDeCarregamento value=parcial>
 	                      	  <input type=hidden name=tarefa value=PreparaDadosDosCombosDoRolDeMembros>
 	                          <li>
@@ -64,7 +71,7 @@
 	                      </form>
                           <li><a  href="">Cargos</a></li>
                           <li><a  href="">Formas de Admissão</a></li>
-                          <li><a  href="">Condições dos membros</a></li>
+                          <li><a  href="">Condições</a></li>
                           <li><a  href="">Motivos de exclusão</a></li>
                           <li><a  href="">Endereços</a></li>
                           <li><a  href="">Grupo Familiar</a></li>

@@ -7,9 +7,10 @@ public class Pessoa {
 	private LocalDate dataNascimento;
 	private String naturalidade;
 	private String nacionalidade;
-	private int sexo;
+	private Integer sexo;
 	private String tipoSanguino;
 	private String estadoCivil;
+	
 	public String getNome() {
 		return nome;
 	}
@@ -34,10 +35,10 @@ public class Pessoa {
 	public void setNacionalidade(String nacionalidade) {
 		this.nacionalidade = nacionalidade;
 	}
-	public int getSexo() {
+	public Integer getSexo() {
 		return sexo;
 	}
-	public void setSexo(int sexo) {
+	public void setSexo(Integer sexo) {
 		this.sexo = sexo;
 	}
 	public String getTipoSanguino() {

@@ -1,9 +1,23 @@
 $(document).ready(function(){
+	if ($('#msgSucces').html() !== ""){
+		$('#divSucces').show();
+	} 
+	
+	if ($('#msgInfo').html() !== ""){
+		$('#divInfo').show();
+	} 
+	
+	if ($('#msgDanger').html() !== ""){
+		$('#divDanger').show();
+	}
 	
 	if ($('#ultimaAcao').val() == $('#checkConsultar').val()){
 		$('#checkConsultar').prop('checked' , 'checked');
 		$('#txtBotao').html("Consultar");
 		removeObrigatoriedadeDoFormDadosCadastrais();
+	} 
+	else {
+		$('#checkCadastrar').prop('checked' , 'checked');
 	}
 	
 	$('#checkCadastrar').click(function(){
@@ -21,26 +35,55 @@ $(document).ready(function(){
 		$('#comboCondicao').val($('#condicaoSelecionadaHidden').val());
 	}
 	
+	if ($('#unidadeSelecionadaHidden').val() != ""){
+		$('#comboUnidade').val($('#unidadeSelecionadaHidden').val());
+	}
+	//###################
+	
+	if ($('#sexoHidden').val() != ""){
+		$('#sexo').val($('#sexoHidden').val());
+	}
+	
+	if ($('#tipoSanguineoHidden').val() != ""){
+		$('#tipoSanguineo').val($('#tipoSanguineoHidden').val());
+	}
+	
+	if ($('#escolaridadeHidden').val() != ""){
+		$('#escolaridade').val($('#escolaridadeHidden').val());
+	}
+	
+	if ($('#estadoCivilHidden').val() != ""){
+		$('#estadoCivil').val($('#estadoCivilHidden').val());
+	}
+	
+	//##############
+	
 	if ($('#liberarDemaisCadastros').val() == "true"){
-		$('#divDemaisCadastros').show();
-		bloquearDadosCadastrais();
+		$('#divDemaisCadastrosLeft').show();
+		$('#divDemaisCadastrosRight').show();
+		bloquearDadosCadastrais(); 
 	}
 	
 	if ($('#exibeResultadoConsulta').val() == "true"){
 		$('#tabelaDeMembros').show();
 	}
 	
+	$(document.getElementById("dataDeNascimento")).mask("99/99/9999");
+	$(document.getElementById("dataDeCasamento")).mask("99/99/9999");
+	$(document.getElementById("dataDeAtualizacao")).mask("99/99/9999");
+	$(document.getElementById("dataDeCadastramento")).mask("99/99/9999");
+	
 })
 
 function removeObrigatoriedadeDoFormDadosCadastrais(){
-	$('#codigoDeMembro').removeAttr('required');
+	$('#codigo').removeAttr('required');
 	$('#nome').removeAttr('required');
 	$('#comboCondicao').removeAttr('required');
 	$('#comboUnidade').removeAttr('required');
 }
 
 function addObrigatoriedadeDoFormDadosCadastrais(){
-	$('#codigoDeMembro').attr('required','required');
+	$('#codigo').attr('required','required');
 	$('#nome').attr('required','required');
 	$('#comboCondicao').attr('required','required');
 	$('#comboUnidade').attr('required','required');
@@ -57,6 +100,18 @@ $("#HDadosP").click(
 				min_max(this, "show");
 
 			}
+		});
+
+$("#headerDadosCadastrais").click(
+		function() {
+				if ($("#panelDadosCadastrais")[0].style.display == "block" 
+						|| $("#panelDadosCadastrais")[0].style.display == "") {
+					$("#panelDadosCadastrais").slideUp(200);
+					min_max(this, "hide");
+				} else {
+					$("#panelDadosCadastrais").slideDown(200);
+					min_max(this, "show");
+				}
 		});
 
 $("#HideHoriFrm").click(
@@ -106,29 +161,36 @@ function min_max(panel, acao) {
 }
 
 function bloquearDadosCadastrais(){
-	$('#codigoDeMembro').prop('readOnly', true );
+	$('#checkCadastrar').prop('disabled', true );
+	$('#checkConsultar').prop('disabled', true );
+	$('#codigo').prop('readOnly', true );
 	$('#nome').prop('readOnly', true );
 	$('#comboCondicao').prop('disabled', true );
 	$('#comboUnidade').prop('disabled', true );
+	$('#btnGravaDadosCadastrais').prop('disabled', true);
 }
 
 function desbloquearDadosCadastrais(){
-	$('#codigoDeMembro').prop('readOnly', false );
+	$('#checkCadastrar').prop('disabled', false );
+	$('#checkConsultar').prop('disabled', false );
+	$('#codigo').prop('readOnly', false );
 	$('#nome').prop('readOnly', false );
 	$('#comboCondicao').prop('disabled', false );
 	$('#comboUnidade').prop('disabled', false );
+	$('#btnGravaDadosCadastrais').prop('disabled', false); 
 }
 function limparDadosCadastrais(){
-	$('#codigoDeMembro').val("");
+	$('#codigo').val("");
 	$('#nome').val("");
 	$('#comboCondicao').val("");
-	$('#dataInclusao').val("");
+	$('#dataDeCadastramento').val("");
 	$('#comboUnidade').val("");
 }
 
 function inicializarTela(){
 	$('#tabelaDeMembros').hide(); 
-	$('#divDemaisCadastros').hide();
+	$('#divDemaisCadastrosLeft').hide();
+	$('#divDemaisCadastrosRight').hide();
 	limparDadosCadastrais(); 
 	desbloquearDadosCadastrais();
 }

@@ -19,7 +19,7 @@ public class ObterDadosDosCombosDAO {
 	private final String QUERY_LISTA_PROFISSOES = "select * from `profissoesdb`";
 	private final String QUERY_LISTA_SOCIEDADES = "select * from `sociedadesdb`";
 	private final String QUERY_LISTA_ADMISSOES = "select * from `motivos_admissoesdb`";
-	private final String QUERY_LISTA_ELIMINACAO = "select * from `motivos_eliminacoes`";
+	private final String QUERY_LISTA_ELIMINACAO = "select * from `motivos_eliminacoesdb`";
 	
 	public List<Condicao> getListaCondicao() {
 		List<Condicao> lista = new ArrayList<>();

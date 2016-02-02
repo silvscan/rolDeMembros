@@ -1,21 +1,23 @@
 package br.com.ipb.dao;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
-
 import br.com.ipb.model.dto.Membro;
+import br.com.ipb.util.DaoUteis;
 
 public class DadosCadastraisDAO implements DefaultDAO<Membro>{
-    private final String QUERY_CADASTRO_DADOS_CADASTRAIS = "INSERT INTO `ipbjard_db`.`membrosdb`(`id`,`nome`,`codigoDaCondicao`,`unidadeFrequentada`,`dataDeInclusao`) VALUES (?,?,?,?,?)";
+    private final String QUERY_CADASTRO_DADOS_CADASTRAIS = "INSERT INTO `ipbjard_db`.`membrosdb`(`id`,`nome`,`codigoDaCondicao`,`unidadeFrequentada`,`dataDeCadastramento`, `dataDeAtualizacao`) VALUES (?,?,?,?,?,?)";
     private final String QUERY_SELECT_MEMBRO = "SELECT * FROM `ipbjard_db`.`membrosdb` WHERE ID = ?";
 	
+    DaoUteis daoUteis;
+    public DadosCadastraisDAO() {
+    	daoUteis = new DaoUteis();
+	}
+    
     @Override
     public void salvar(Membro membro) throws SQLException, Exception{
 		try (  Connection conexao = ConnectionFactory.getConexao(); 
@@ -33,8 +35,9 @@ public class DadosCadastraisDAO implements DefaultDAO<Membro>{
 			psInsert.setInt(1, membro.getId());
 			psInsert.setString(2, membro.getNome());
 			psInsert.setInt(3, membro.getCondicao().getCodigo());
-			psInsert.setInt(4, membro.getUnidade().getCodigo());
-			psInsert.setDate(5, Date.valueOf(LocalDate.now()));
+			psInsert.setInt(4, membro.getUnidadeFrequentada().getCodigo());
+			psInsert.setDate(5, daoUteis.setDate(membro.getDataDeCadastramento()));
+			psInsert.setDate(6, daoUteis.setDate(membro.getDataDeAtualizacao()));
 			
 			psInsert.execute();
 			
@@ -60,7 +63,7 @@ public class DadosCadastraisDAO implements DefaultDAO<Membro>{
 				Membro me = new Membro();
 				me.setId(rs.getInt(1));
 				me.setNome(rs.getString(2));
-				//me.setDataNascimento(rs.getDate(3).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+				me.setDataNascimento(rs.getDate(3) != null ? rs.getDate(3).toLocalDate() : null);
 				me.getCondicao().setCodigo(rs.getInt(4));
 				me.getCondicao().setDescricao(rs.getString(5));
 				me.getEndereco().setCodEndereco(rs.getInt(6));

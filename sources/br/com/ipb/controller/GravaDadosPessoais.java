@@ -1,40 +1,45 @@
 package br.com.ipb.controller;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import br.com.ipb.dao.DadosCadastraisDAO;
+import br.com.ipb.dao.DadosPessoaisDAO;
 import br.com.ipb.dao.DefaultDAO;
+import br.com.ipb.dao.RolDeMembrosDAO;
 import br.com.ipb.model.dto.Membro;
 import br.com.ipb.util.ConstantesUteis;
+import br.com.ipb.util.ObtemParameterRolDeMembros;
 
-public class GravaDadosCadastrais implements Tarefa{
-	
+public class GravaDadosPessoais implements Tarefa{
 	private DefaultDAO<Membro> dao;
+	private RolDeMembrosDAO rolDeMembrosDAO;
 	
-	public GravaDadosCadastrais() {
-		dao = new DadosCadastraisDAO();
+	public GravaDadosPessoais() {
+		dao = new DadosPessoaisDAO();
+		rolDeMembrosDAO = new RolDeMembrosDAO();
 	}
 	
 	@Override
 	public String executa(HttpServletRequest req, HttpServletResponse resp){
 		new PreparaDadosDosCombosDoRolDeMembros().setarListasBasicaDosCombosNaRequest(req);
-		cadastrarNovoMembro(req);
+		cadastrarDadosPessoais(req);
 		return "admin/rolDeMembros.jsp";
 	}
+
 	
-	private void cadastrarNovoMembro(HttpServletRequest req){
+	private void cadastrarDadosPessoais(HttpServletRequest req){
 		Membro membro = obterParametrosDaRequest(req);
+		List<Membro> listaMembros = new ArrayList<Membro>();
 		try {
 			dao.salvar(membro);
 			req.setAttribute("liberarDemaisCadastros", true);
 			req.setAttribute("ultimaAcao", this.getClass().getSimpleName());
 			new PreparaDadosDosCombosDoRolDeMembros().setarListasCompletaDosCombosNaRequest(req);
+			
 			req.setAttribute(ConstantesUteis.ATTR_SUCESSO, ConstantesUteis.MSG_SUCESSO_CADASTRO_DEFAULT);
-			req.setAttribute(ConstantesUteis.ATTR_AVISO, ConstantesUteis.MSG_SUCESSO_CONTINUAR_CADASTRO);
 		} catch (IllegalArgumentException e) {
 			req.setAttribute(ConstantesUteis.ATTR_ERRO, e.getMessage());
 			e.printStackTrace();
@@ -42,18 +47,17 @@ public class GravaDadosCadastrais implements Tarefa{
 			req.setAttribute(ConstantesUteis.ATTR_ERRO, ConstantesUteis.MSG_ERRO_DEFAULT);
 			e.printStackTrace();
 		}
-		
-		req.setAttribute("membro", membro);
+		try{
+			listaMembros = rolDeMembrosDAO.consultar(membro);
+			req.setAttribute("membro", listaMembros.get(0));
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 
+	@Override
 	public Membro obterParametrosDaRequest(HttpServletRequest req) {
-		Membro membro = new Membro();
-		membro.setId(req.getParameter("codigo") != null && !"".equals(req.getParameter("codigo"))? Integer.valueOf(req.getParameter("codigo")) : 0);
-		membro.setNome(req.getParameter("nome"));
-		membro.getCondicao().setCodigo(req.getParameter("condicao")  != null && !"".equals(req.getParameter("condicao")) ? Integer.valueOf(req.getParameter("condicao")) : 0);
-		membro.getUnidadeFrequentada().setCodigo(req.getParameter("unidade")  != null && !"".equals(req.getParameter("unidade")) ? Integer.valueOf(req.getParameter("unidade")) : 0);
-		membro.setDataDeCadastramento(LocalDate.now(ZoneId.of(ConstantesUteis.ZONE_ID_SP)));
-		membro.setDataDeAtualizacao(LocalDate.now(ZoneId.of(ConstantesUteis.ZONE_ID_SP)));
-		return membro;
+		return new ObtemParameterRolDeMembros().obterParametrosDaRequest(req);
 	}
+
 }

@@ -27,7 +27,7 @@ public class PreparaDadosDosCombosDoRolDeMembros implements Tarefa{
 		return "admin/rolDeMembros.jsp";
 	}
 	
-	public static void setarListasCompletaDosCombosNaRequest(HttpServletRequest req) {
+	public void setarListasCompletaDosCombosNaRequest(HttpServletRequest req) {
 		setarListasBasicaDosCombosNaRequest(req);
 		req.setAttribute("listaAdmissoes", obterDadosDosCombosDAO.getListaAdmissoes());
 		req.setAttribute("listaEliminacoes", obterDadosDosCombosDAO.getListaEliminacoes());
@@ -35,7 +35,7 @@ public class PreparaDadosDosCombosDoRolDeMembros implements Tarefa{
 		req.setAttribute("listaSociedades", obterDadosDosCombosDAO.getListaSociedades());
 	}
 
-	public static void setarListasBasicaDosCombosNaRequest(HttpServletRequest req) {
+	public void setarListasBasicaDosCombosNaRequest(HttpServletRequest req) {
 		req.setAttribute("listaUnidades", obterDadosDosCombosDAO.getListaUnidades());
 		req.setAttribute("listaCondicoes", obterDadosDosCombosDAO.getListaCondicao());
 	}
